@@ -1,10 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
 function Register() {
+  const navigate = useNavigate();
+
+  const [register, setRegister] = useState({
+    email: "",
+    username: "",
+    password: "",
+  });
+  const setInput = (e) => {
+    const { name, value } = e.target;
+    setRegister((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  const postRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const { data: res } = await axios.post(
+        "http://localhost:5000/api/register",
+        {
+          email: register.email,
+          username: register.username,
+          password: register.password,
+        }
+      );
+      navigate("/login");
+      console.log(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="register-page h-screen flex justify-center items-center">
       <div className="w-1/3">
-        <form className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4">
+        <form
+          className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4"
+          onSubmit={postRegister}
+        >
           <div className="mb-4">
             <label className="text-gray-700 text-sm font-bold mb-2">
               Email
@@ -14,6 +51,7 @@ function Register() {
               type="email"
               name="email"
               placeholder="Email"
+              onChange={setInput}
             />
           </div>
           <div className="mb-4">
@@ -25,6 +63,7 @@ function Register() {
               type="text"
               name="username"
               placeholder="Username"
+              onChange={setInput}
             />
           </div>
           <div className="mb-4">
@@ -36,6 +75,7 @@ function Register() {
               type="password"
               name="password"
               placeholder="Password"
+              onChange={setInput}
             />
           </div>
           <div className="mb-8">
@@ -47,6 +87,7 @@ function Register() {
               type="password"
               name="confirm-password"
               placeholder="Password"
+              onChange={setInput}
             />
           </div>
           <div className="flex justify-between flex-col">
