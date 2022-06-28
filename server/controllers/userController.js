@@ -54,7 +54,11 @@ const loginUser = async (req, res) => {
 };
 
 const getUserData = async (req, res) => {
-  res.json({ message: "User data displayed" });
+  res.status(200).json({
+    id: req.user.recordset[0].id,
+    username: req.user.recordset[0].username,
+    email: req.user.recordset[0].email,
+  });
 };
 
 const generateToken = (id) => {
