@@ -9,9 +9,15 @@ const protect = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, "mysecretkey");
-      req.user = await dbOperation.getId(decoded.id);
-      next();
+      jwt.verify(token, "mysecretkey", (er, decoded) => {
+        if (er) {
+          console.log(ere.message);
+          res.redirect("/login");
+        } else {
+          res.send("Good");
+          next();
+        }
+      });
     } catch (error) {
       console.log(error);
       res.status(401).json({ message: "Invalid token" });
@@ -20,6 +26,7 @@ const protect = async (req, res, next) => {
   if (!token) {
     res.status(401).json({ message: "No token" });
     console.log("No token");
+    res.redirect("/login");
   }
 };
 

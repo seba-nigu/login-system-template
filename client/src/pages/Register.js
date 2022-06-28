@@ -22,23 +22,29 @@ function Register() {
   const postRegister = async (e) => {
     e.preventDefault();
     try {
-      if (register.password === register.confirmPassword) {
-        const { data: res } = await axios
-          .post("http://localhost:5000/api/user/", {
-            email: register.email,
-            username: register.username,
-            password: register.password,
-            confirmPassword: register.confirmPassword,
-          })
-          .catch((error) => {
-            setShowResults(true);
-            setWarningMessage("Email already in use!");
-          });
-        navigate("/login");
-        console.log(res.message);
-      } else {
+      console.log(register.password);
+      if (register.password === "" || register.confirmPassword === "") {
         setShowResults(true);
-        setWarningMessage("Passwords do not match!");
+        setWarningMessage("Please provide a password and a confim password!");
+      } else {
+        if (register.password === register.confirmPassword) {
+          const { data: res } = await axios
+            .post("http://localhost:5000/api/user/", {
+              email: register.email,
+              username: register.username,
+              password: register.password,
+              confirmPassword: register.confirmPassword,
+            })
+            .catch((error) => {
+              setShowResults(true);
+              setWarningMessage("Email already in use!");
+            });
+          navigate("/login");
+          console.log(res.message);
+        } else {
+          setShowResults(true);
+          setWarningMessage("Passwords do not match!");
+        }
       }
     } catch (error) {
       console.log(error);

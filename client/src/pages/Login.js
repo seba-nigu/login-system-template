@@ -29,8 +29,8 @@ function Login() {
           password: login.password,
         }
       );
-      window.localStorage.setItem("token", res.token);
-      navigate("/");
+      window.localStorage.setItem("user", JSON.stringify(res));
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
       setWarningMessage("Wrong credentials!");
