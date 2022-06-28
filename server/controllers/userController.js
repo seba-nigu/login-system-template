@@ -26,27 +26,41 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   let data = await dbOperation.getLogin(req.body.email);
-  bcrypt.compare(
-    req.body.password,
-    data.recordset[0].password,
-    function (err, resp) {
-      if (err) {
-        console.log(err);
+  if (!data.recordset[0]) {
+    res.status(400).json({ message: "Email or Password incorrect!" });
+  } else {
+    bcrypt.compare(
+      req.body.password,
+      data.recordset[0].password,
+      function (err, resp) {
+        if (err) {
+          console.log(err);
+        }
+        if (resp) {
+          console.log("Match");
+          res.json({
+            id: data.recordset[0].id,
+            username: data.recordset[0].username,
+            email: data.recordset[0].email,
+            token: generateToken(data.recordset[0].id),
+          });
+        } else {
+          console.log("No match");
+          res.status(400).json({ message: "Email or Password incorrect!" });
+        }
       }
-      if (resp) {
-        4;
-        // Send JWT next
-        console.log("Match");
-      } else {
-        console.log("No match");
-        res.status(400).json({ message: "Email or Password incorrect!" });
-      }
-    }
-  );
+    );
+  }
 };
 
 const getUserData = async (req, res) => {
   res.json({ message: "User data displayed" });
+};
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, "mysecretkey", {
+    expiresIn: "30d",
+  });
 };
 
 module.exports = {
