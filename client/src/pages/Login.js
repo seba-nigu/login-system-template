@@ -20,7 +20,7 @@ function Login() {
     e.preventDefault();
     try {
       const { data: res } = await axios.post(
-        "http://localhost:5000/api/login",
+        "http://localhost:5000/api/user/login",
         {
           email: login.email,
           password: login.password,
