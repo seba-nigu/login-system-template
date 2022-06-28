@@ -27,7 +27,20 @@ const getLogin = async (email) => {
   }
 };
 
+const getId = async (id) => {
+  try {
+    let pool = await sql.connect(config);
+    let data = pool
+      .request()
+      .query(`SELECT id, email, username FROM [user] WHERE id ='${id}'`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   createRegister,
   getLogin,
+  getId,
 };
