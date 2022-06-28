@@ -35,6 +35,7 @@ function Register() {
             setWarningMessage("Email already in use!");
           });
         navigate("/login");
+        console.log(res.message);
       } else {
         setShowResults(true);
         setWarningMessage("Passwords do not match!");
@@ -115,7 +116,7 @@ function Register() {
           </div>
         </form>
         {showResults ? (
-          <div className="text-xl font-bold p-4 text-center rounded bg-black text-white">
+          <div className="text-xl font-bold p-4 text-center rounded mx-24 bg-black text-white">
             {warningMessage}
           </div>
         ) : null}

@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+  const [warningMessage, setWarningMessage] = useState("");
+  const [showResults, setShowResults] = useState(false);
   // the login data from the form that will be passed to the backend
   const [login, setLogin] = useState({
     email: "",
@@ -26,11 +29,12 @@ function Login() {
           password: login.password,
         }
       );
-      localStorage().setItem("token", res.data);
-      console.log(res.message);
-      window.location = "/";
+      window.localStorage.setItem("token", res.token);
+      navigate("/");
     } catch (error) {
       console.log(error);
+      setWarningMessage("Wrong credentials!");
+      setShowResults(true);
     }
   };
 
@@ -88,6 +92,11 @@ function Login() {
             </div>
           </div>
         </form>
+        {showResults ? (
+          <div className="text-xl font-bold p-4 text-center rounded mx-24 bg-black text-white">
+            {warningMessage}
+          </div>
+        ) : null}
       </div>
     </div>
   );

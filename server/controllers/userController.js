@@ -38,12 +38,15 @@ const loginUser = async (req, res) => {
         }
         if (resp) {
           console.log("Match");
-          res.json({
+          let returnedData = {
             id: data.recordset[0].id,
             username: data.recordset[0].username,
             email: data.recordset[0].email,
             token: generateToken(data.recordset[0].id),
-          });
+          };
+          res.json(returnedData);
+          console.log(returnedData);
+          return returnedData;
         } else {
           console.log("No match");
           res.status(400).json({ message: "Email or Password incorrect!" });

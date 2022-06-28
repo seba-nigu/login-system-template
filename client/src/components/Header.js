@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <div className="mx-12 border-b-2 border-b-slate flex items-center justify-between">
+    <div className="mx-12 border-b-2 border-b-slate flex items-center justify-between font-semibold">
       <div className="text-3xl font-bold p-6 text-blue-500">
         <Link to="/">LoginProj</Link>
       </div>
