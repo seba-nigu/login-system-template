@@ -4,6 +4,8 @@ import { useState } from "react";
 
 function Register() {
   const navigate = useNavigate();
+  const [warningMessage, setWarningMessage] = useState("");
+  const [showResults, setShowResults] = useState(false);
 
   const [register, setRegister] = useState({
     email: "",
@@ -20,23 +22,30 @@ function Register() {
   const postRegister = async (e) => {
     e.preventDefault();
     try {
-      const { data: res } = await axios.post(
-        "http://localhost:5000/api/user/",
-        {
-          email: register.email,
-          username: register.username,
-          password: register.password,
-        }
-      );
-      navigate("/login");
-      console.log(res.message);
+      if (register.password === register.confirmPassword) {
+        const { data: res } = await axios
+          .post("http://localhost:5000/api/user/", {
+            email: register.email,
+            username: register.username,
+            password: register.password,
+            confirmPassword: register.confirmPassword,
+          })
+          .catch((error) => {
+            setShowResults(true);
+            setWarningMessage("Email already in use!");
+          });
+        navigate("/login");
+      } else {
+        setShowResults(true);
+        setWarningMessage("Passwords do not match!");
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="register-page h-screen flex justify-center items-center">
+    <div className="register-page h-3/4  flex justify-center items-center">
       <div className="w-1/3">
         <form
           className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4"
@@ -80,12 +89,12 @@ function Register() {
           </div>
           <div className="mb-8">
             <label className="text-gray-700 text-sm font-bold mb-2">
-              Retype Password
+              Confirm Password
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-700"
               type="password"
-              name="confirm-password"
+              name="confirmPassword"
               placeholder="Password"
               onChange={setInput}
             />
@@ -105,6 +114,11 @@ function Register() {
             </Link>
           </div>
         </form>
+        {showResults ? (
+          <div className="text-xl font-bold p-4 text-center rounded bg-black text-white">
+            {warningMessage}
+          </div>
+        ) : null}
       </div>
     </div>
   );

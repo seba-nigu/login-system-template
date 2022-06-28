@@ -35,7 +35,7 @@ function Login() {
   };
 
   return (
-    <div className="login-page h-screen flex justify-center items-center">
+    <div className="login-page h-3/4 flex justify-center items-center">
       <div className="w-1/3">
         <form
           className="bg-white shadow-xl rounded px-8 pt-6 pb-8 mb-4"
