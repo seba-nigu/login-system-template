@@ -1,5 +1,12 @@
+import Header from "../components/Header";
+
 function Hero() {
-  return <div>Hero</div>;
+  return (
+    <>
+      <Header />
+      <div>Hero</div>
+    </>
+  );
 }
 
 export default Hero;
